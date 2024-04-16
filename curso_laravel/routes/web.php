@@ -37,10 +37,12 @@ Route::get('/gestor/tela-inicial', function () {
 Route::get('/teste/controller', [ TesteController::class, 'teste' ]);
 
 // rotas da aplicação que vou desenvolver
-Route::get('/forum', [ SuporteController::class, 'index' ])->name('suporte'); // nomeandoa rota com o método name()
+Route::get('/forum', [ SuporteController::class, 'index' ])->name('suportes.suporte'); // nomeando a rota com o método name()
 // rota para ser redirecionado a tela de cadastardo de uma solicitação de suporte
 Route::get('/forum/cadastrar', [ SuporteController::class, 'cadastrarSuporte' ])->name('novo-suporte');
 // rota para salvar os dados da solicitação de suporte no banco de dados
 Route::post('/suporte/cadastrar', [ SuporteController::class, 'salvarSuporte' ]);
 Route::put('/suporte/alterar', [ SuporteController::class, 'editarSuporte' ]);
 Route::get('/suporte/editar/{id}', [ SuporteController::class, 'redirecionarTelaEditarSuporte' ]);
+Route::get('/suporte/visualizar/{id}', [ SuporteController::class, 'redirecionarTelaVisualizarSolicitacaoSuporte' ]);
+Route::get('/suporte/deletar/{id}', [ SuporteController::class, 'deletarSuporte' ]);

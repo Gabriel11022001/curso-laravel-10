@@ -8,8 +8,6 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
-use function Ramsey\Uuid\v1;
-
 class SuporteController extends Controller
 {
 
@@ -45,6 +43,12 @@ class SuporteController extends Controller
             $suporte->mensagem = $requisicao->mensagem;
             $suporte->status = 'pendente';
 
+            /**
+             * a partir do objeto instanciado que representa a minha model(entidade),
+             * eu posso invocar o método save() que persiste os dados
+             * da model no banco de dados, na tabela a qual a model
+             * faz referência
+             */
             if ($suporte->save()) {
 
                 return view('cadastrar-suporte', [ 'mensagem' => 'Solicitação de suporte cadastrada com sucesso!' ]);
@@ -52,6 +56,11 @@ class SuporteController extends Controller
 
             return view('cadastrar-suporte', [ 'mensagem' => 'Ocorreu um erro ao tentar-se cadastrar a solicitação de suporte!' ]);
         } catch (Exception $e) {
+            /**
+             * a partir da classe Log, eu posso invocar o método error()
+             * que salva no arquivo de log que fica em storage, a mensagem
+             * que eu passo como argumento para o método
+             */
             Log::error('Ocorreu o seguinte erro ao tentar-se cadastrar o suporte: ' . $e->getMessage());
 
             return view('cadastrar-suporte', [ 'mensagem' => 'Ocorreu um erro ao tentar-se cadastrar uma solicitação de suporte!' ]);
@@ -64,7 +73,7 @@ class SuporteController extends Controller
 
         if (!$suporte) {
 
-            return redirect()->route('suporte');
+            return redirect()->route('suportes.suporte');
         }
 
         // dd($suporte->toArray());
@@ -98,6 +107,43 @@ class SuporteController extends Controller
                 'mensagem' => 'Ocorreu um erro ao tentar-se editar os dados da solicitação de suporte!',
                 'suporte' => []
             ]);
+        }
+
+    }
+
+    public function redirecionarTelaVisualizarSolicitacaoSuporte(int $id)
+    {
+        // o método find() serve para buscar um elemento pela chave primária
+        $solicitacaoSuporte = Suporte::find($id);
+
+        if (!$solicitacaoSuporte) {
+
+            return redirect()->route('suportes.suporte');
+        }
+
+        return view('visualizar-suporte', [
+            'suporte' => $solicitacaoSuporte
+        ]);
+    }
+
+    public function deletarSuporte(int $id)
+    {
+
+        try {
+            $suporte = Suporte::find($id);
+
+            if (!$suporte) {
+
+                return redirect()->route('suportes.suporte');
+            }
+
+           $suporte->delete();
+
+           return redirect()->route('suportes.suporte');
+        } catch (Exception $e) {
+            Log::error('Ocorreu o seguinte erro ao tentar-se deletar a solicitação de suporte: ' . $e->getMessage());
+
+            return redirect()->route('suportes.suporte');
         }
 
     }

@@ -27,7 +27,8 @@
                         <td>{{ $suporte['mensagem'] }}</td>
                         <td>{{ $suporte['status'] }}</td>
                         <td><a href="/suporte/editar/{{ $suporte['id'] }}">Editar</a></td>
-                        <td><a href="suporte/visualizar/{{ $suporte['id'] }}">Visualizar</a></td>
+                        <td><a href="/suporte/visualizar/{{ $suporte['id'] }}">Visualizar</a></td>
+                        <td><a href="/suporte/deletar/{{ $suporte['id'] }}">Deletar</a></td>
                     </tr>
                 @endforeach
             </thead>
